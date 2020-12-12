@@ -1,0 +1,19 @@
+{
+  "name": "team.manager.node",
+  "version": "1.0.0",
+  "description": "\"a node CLI to manage employees and departments\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"Team Manager Initialized\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "htt://github.com/perezcarlos93/teammanager"
+  },
+  "author": "Carlos Perez",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  }
+}
