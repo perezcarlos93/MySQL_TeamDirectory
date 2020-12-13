@@ -41,12 +41,12 @@ function runApp(){
 
 // Displays all employees
 function viewAll(){
-    var query = 'SELECT * FROM employees_DB.employee' 
+    let query = 'SELECT * FROM employees_DB.employee' 
     connection.query(query, (err, res) => {
         if (err) throw err
         var employeeArray = [];
         for(i = 0; i < res.length; i++){
-            employeeArray.push(JSON.stringify(res[i]))
+            employeeArray.push(JSON.stringify(res[i].fullName))
         }
 
 
@@ -58,7 +58,13 @@ function viewAll(){
                 choices: employeeArray
             }
         ).then( (answers) => {
-            console.log("Employee: " + (answers.employee) + " || Department: " + (answers.department) + " || Manager: " + (answers.manager));
+            console.log(answers.employee)
+            let query = 'SELECT * FROM employees_db.employee WHERE fullName=?'
+            connection.query(query, answers.employee, (err, res) => {
+                if (err) throw err
+                console.log(res)
+                console.log("Employee: " + (res.firstName) + " || Department: " + (res.department) + " || Manager: " + (res.manager));
+            } )
             
         }).catch( (err) => {if (err) console.log(err) })
     })
