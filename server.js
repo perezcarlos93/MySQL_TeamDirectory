@@ -1,5 +1,6 @@
 const connection = require("./connection/connection");
 const inquirer = require("inquirer");
+const Table = require("cli-table");
 const { rootQuestion, employeeQuestion } = require("./library/questions")
 
 // Top level inquirer questions app
@@ -29,33 +30,52 @@ function viewAll(){
     let query = 'SELECT * FROM employees_DB.employee' 
     connection.query(query, (err, res) => {
         if (err) throw err
-        var employeeArray = [];
-        for(i = 0; i < res.length; i++){
-            employeeArray.push(JSON.stringify(res[i].fullName))
-        }
 
-        inquirer.prompt(
+        const table = new Table(
             {
-                type: "list",
-                message: "Please select an employee",
-                name: "employee",
-                choices: employeeArray
+                head: ['id', 'Name', 'Department', 'Manager'],
+                colWidths: [10, 20, 20, 20]
             }
-        ).then( (answers) => {
-            console.log(answers.employee)
-            let query = 'SELECT * FROM employees_db.employee WHERE fullName=?'
-            connection.query(query, [answers.employee], (err, res) => {
-                if (err) throw err
-                console.log(res)
-                console.log("Employee: " + (JSON.stringify(res.firstName)) + " || Department: " + (res.department) + " || Manager: " + (res.manager));
-            })
+        )
 
-            runApp();
-            
-        })
+        for(i=0; i < res.length; i++){
+            table.push(
+                [res[i].id, res[i].fullName, res[i].department, res[i].manager]
+            );
+        }
+        
+        console.log(table.toString())
+
+        // var employeeArray = [];
+        // for(i = 0; i < res.length; i++){
+        //     employeeArray.push(JSON.stringify(res[i].fullName))
+        // }
+
+        // inquirer.prompt(
+        //     {
+        //         type: "list",
+        //         message: "Please select an employee",
+        //         name: "employee",
+        //         choices: employeeArray
+        //     },
+
+        // ).then( (answers) => {
+        //     console.log(answers.employee)
+        //     let query = 'SELECT * FROM employee WHERE fullName=?'
+        //     connection.query(query, [answers.employee], (err, res) => {
+        //         if (err) throw err
+        //         console.log(res)
+        //     })
+
+        
+        // })
         // .catch( (err) => {if (err) console.log(err) })
         
     })
+
+    console.log("-------------------------------------------")
+
+    runApp();
 };
 
 // Adds a new employee
@@ -116,6 +136,11 @@ function exit(){
             runApp();
         }
     })
+}
+function returnToMenu(answers){
+    if(answers.return){
+        runApp();
+    }
 }
 
 runApp();
