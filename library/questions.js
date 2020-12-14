@@ -7,7 +7,8 @@ const rootQuestion = [
         choices: [
             "View all employees",
             "View all employees by department",
-            "Add an employee"
+            "Add an employee",
+            "Exit"
         ]
     }
 ]
@@ -15,13 +16,8 @@ const rootQuestion = [
 const employeeQuestion = [
     {
         type: "input",
-        message: "Please enter employees first name",
-        name: "firstName"
-    },
-    {
-        type: "input",
-        message: "Please enter employees last name",
-        name: "lastName"
+        message: "Please enter employees name",
+        name: "name"
     },
     {
         type: "list",
@@ -34,7 +30,7 @@ const employeeQuestion = [
         ]
     },
     {
-        type: "input",
+        type: "list",
         message: "Please enter employees Manager",
         name: "manager",
         choices: [
@@ -45,11 +41,5 @@ const employeeQuestion = [
     },
 ]
 
-
-// function viewAll(){
-//     app.get('', (req, res) => {
-//         res.json()
-//     })
-// }
 
 module.exports = { rootQuestion, employeeQuestion }
