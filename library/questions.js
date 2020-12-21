@@ -39,6 +39,11 @@ const employeeQuestion = [
             "Alberto Cortez"
         ]
     },
+    // {
+    //     type: "confirm",
+    //     message: "Return to previous menu",
+    //     name: "return",
+    // },
 ]
 
 
