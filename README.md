@@ -8,7 +8,7 @@
 
 -[Usage Instructions](##Usage)
 
--[Future Development](##Future_Development)
+-[Future Development](##FutureDevelopment)
 
 -[Licensing](##License)
 
@@ -36,7 +36,7 @@ To view all the employees in your database, select 'View all employees'. Alterna
 
 You can close the program by selecting 'exit' when prompted what you'd like to do.
 
-## Future_Development <a name="FutureDevelopment></a>
+## Future Development <a name="FutureDevelopment></a>
 
 Future plans for this program include:
 
