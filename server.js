@@ -1,7 +1,11 @@
 const connection = require("./connection/connection");
 const inquirer = require("inquirer");
 const Table = require("cli-table");
-const {rootQuestion, employeeQuestion} = require("./library/questions");
+const {
+  rootQuestion,
+  employeeQuestion,
+  managerQuestion,
+} = require("./library/questions");
 
 // Top level inquirer questions app
 function runApp() {
@@ -17,6 +21,12 @@ function runApp() {
           break;
         case "Add an employee":
           addEmployee();
+          break;
+        case "Remove an employee":
+          deleteEmployee();
+          break;
+        case "Add a Manager":
+          addManager();
           break;
         case "Exit":
           exit();
@@ -70,11 +80,61 @@ function addEmployee() {
           if (err) throw err;
           if (res) {
             console.log("");
-            console.log("Employee added: " + JSON.stringify(res));
-            displayNewEmployee(res);
+            console.log(`Employee added: ${res} `);
+            // displayNewEmployee(res);
           }
         }
       );
+
+      runApp();
+    })
+    .catch((error) => console.log(error));
+}
+
+function deleteEmployee() {
+  try {
+    const question = {
+      type: "list",
+      message: "Please select an employee to remove",
+      name: "employee",
+      choices: [],
+    };
+
+    connection.query(`SELECT * FROM employees_DB.employee`, (err, res) => {
+      if (err) throw err;
+
+      function pushToArray(query) {
+        for (i = 0; i < query.length; i++) {
+          question.choices.push(query[i].fullName);
+        }
+      }
+      pushToArray(res);
+
+      inquirer
+        .prompt(question)
+        .then((answers) => {
+          let query = `DELETE FROM employees_DB.employee WHERE fullName=?`;
+          connection.query(query, [answers.employee], (err, res) => {
+            if (err) throw err;
+
+            console.log("");
+            console.log(`${answers.employee} successfully removed`);
+          });
+        })
+        .catch((err) => console.log(err));
+    });
+  } catch (err) {
+    console.log(err);
+  }
+  runApp();
+}
+
+// Adds a new Manager
+function addManager() {
+  inquirer
+    .prompt(managerQuestion)
+    .then((answers) => {
+      employeeQuestion[2].choices.push(answers.managerName);
 
       runApp();
     })
@@ -131,8 +191,6 @@ function exit() {
       }
     });
 }
-
-function doSomethingElse() {}
 
 // DO NOT DELETE. FUNCTION IS IN DEVELOPMENT
 // Function is meant to run in conjunction with
